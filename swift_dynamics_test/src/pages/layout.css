@@ -1,0 +1,125 @@
+.oval {
+    height: 100px;
+    width: 200px;
+    background-color: #555;
+    border-radius: 50%;
+}
+
+.square {
+    height: 100px;
+    width: 100px;
+    background-color: #555;
+}
+
+.circle {
+    height: 100px;
+    width: 100px;
+    background-color: #555;
+    border-radius: 50%;
+}
+
+.trapezoid {
+    border-bottom: 80px solid #555;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    height: 0;
+    width: 200px;
+}
+
+.rectangle {
+    height: 100px;
+    width: 200px;
+    background-color: #555;
+}
+
+.parallelogram {
+    width: 200px;
+    height: 100px;
+    transform: skew(20deg);
+    background-color: #555;
+}
+
+
+
+.tri-up {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid #555;
+}
+
+.tri-down {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 100px solid #555;
+}
+
+.tri-left {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-right: 100px solid #555;
+    border-bottom: 50px solid transparent;
+}
+
+.tri-right {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-left: 100px solid #555;
+    border-bottom: 50px solid transparent;
+}
+
+.ShapeContainer,
+.ShapeContainerWide {
+    display: flex;
+    height: 130px;
+    margin: 5px;
+    background-color: white;
+    border: none;
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.ShapeContainer {
+    width: 300px;
+}
+
+.ShapeContainerWide {
+    width: 600px;
+}
+
+.ShapeContainer:hover,
+.ShapeContainerWide:hover {
+    background-color: #ffa200; /* Change the background color on hover */
+}
+
+.ShapeContainer:hover .oval,
+.ShapeContainer:hover .square,
+.ShapeContainer:hover .circle,
+.ShapeContainer:hover .rectangle,
+.ShapeContainer:hover .parallelogram {
+  background-color: white;
+}
+
+.ShapeContainer:active,
+.ShapeContainerWide:active {
+    background-color: #6eda78; /* Change the background color on active */
+}
+
+.ButtonFooter {
+    position: absolute;
+    bottom: -10px;
+    background: #6eda78;
+    color: white;
+    font-size: 10px;
+    border-radius: 9999px;
+    padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  }
