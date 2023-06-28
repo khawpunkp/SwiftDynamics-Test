@@ -46,8 +46,8 @@ function App() {
         </Button>
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/layout' element={<LayoutPage />} />
-          <Route path='/form' element={<FormPage />} />
+          <Route path='/layout' element={<LayoutPage loading = {loading} />} />
+          <Route path='/form' element={<FormPage loading = {loading}/>} />
         </Routes>
       </div>
   );
