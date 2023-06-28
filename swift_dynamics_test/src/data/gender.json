@@ -1,0 +1,17 @@
+[
+    {
+      "name": "ชาย",
+      "enName": "Male",
+      "id": "male"
+    },
+    {
+        "name": "หญิง",
+        "enName": "Female",
+        "id": "female"
+    },
+    {
+        "name": "ไม่ระบุ",
+        "enName": "Other",
+        "id": "other"
+    }
+]

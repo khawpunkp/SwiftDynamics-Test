@@ -1,11 +1,11 @@
 import './App.css';
 import { Select, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import Home from './pages/home';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import HomePage from './pages/home';
 import { useEffect, useState } from 'react';
-import Layout from './pages/layout';
-import Form from './pages/form';
+import LayoutPage from './pages/layout';
+import FormPage from './pages/form';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -45,9 +45,9 @@ function App() {
           {t('home')}
         </Button>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/layout' element={<Layout />} />
-          <Route path='/form' element={<Form />} />
+          <Route path='/' element={<HomePage />} />
+          <Route path='/layout' element={<LayoutPage />} />
+          <Route path='/form' element={<FormPage />} />
         </Routes>
       </div>
   );

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-function Home() {
+function HomePage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
@@ -41,4 +41,4 @@ function Home() {
     </>
 }
 
-export default Home;
+export default HomePage;

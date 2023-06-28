@@ -1,9 +1,9 @@
-import { Button, Grid, Row, Col } from 'antd';
-import React, { useEffect, useState } from 'react'
+import { Row, Col } from 'antd';
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import './layout.css';
 
-function Layout() {
+function LayoutPage() {
     const { t } = useTranslation();
     const [moveUp, setMoveUp] = useState<boolean>(false);
     const [shape, setShape] = useState<string[]>(["parallelogram", "rectangle", "trapezoid", "oval", "circle", "square"]);
@@ -26,8 +26,6 @@ function Layout() {
 
     useEffect(() => {
         handleRandomShape();
-        console.log(shape);
-
     }, []);
 
     const handleMoveLeft = () => {
@@ -63,7 +61,7 @@ function Layout() {
     }
 
     return (
-        <div>
+        <>
             <div style={{ position: 'relative' }}>
                 <h1 style={{ position: 'absolute', left: '10px' }}>
                     {t('layout')}
@@ -131,8 +129,8 @@ function Layout() {
                     </Row>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
-export default Layout
+export default LayoutPage

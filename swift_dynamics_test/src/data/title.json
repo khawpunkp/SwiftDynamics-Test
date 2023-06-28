@@ -1,0 +1,22 @@
+[
+    {
+      "name": "นาย",
+      "enName": "Mr.",
+      "id": "mr"
+    },
+    {
+        "name": "นาง",
+        "enName": "Mrs.",
+        "id": "mrs"
+    },
+    {
+        "name": "นางสาว",
+        "enName": "Miss",
+        "id": "miss"
+    },
+    {
+        "name": "ไม่ระบุ",
+        "enName": "Other",
+        "id": "other"
+    }
+]
