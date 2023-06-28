@@ -16,6 +16,7 @@ function App() {
     const handleNavigateHome = () => {
         setLoading(true); // Set loading state to true before changing the path
         navigate('/');
+        setLoading(false);
     };
 
   const handleChangeLanguage = (selectLanguage: string) => {
