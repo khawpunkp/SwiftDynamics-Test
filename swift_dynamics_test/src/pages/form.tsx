@@ -60,7 +60,10 @@ function FormPage(props: any) {
     // Column of the table
     const columns = [
         {
-            title: '',
+            title: <Checkbox
+                checked={allSelected}
+                onChange={(e) => handleSelectAll(e.target.checked)}
+            />,
             dataIndex: 'selectAll',
             render: (_: any, record: User) => (
                 <Checkbox
@@ -83,7 +86,7 @@ function FormPage(props: any) {
             render: (text: string, record: User) => {
                 const gender = genders.find((item) => item.id === record.gender);
 
-                // Determine the nationality label based on the current language
+                // Determine the gender label based on the current language
                 const genderLabel =
                     i18n.language === 'en' ? gender?.enName : gender?.name;
                 return genderLabel;
@@ -141,9 +144,12 @@ function FormPage(props: any) {
     // Handle the checkbox
     const handleSelect = (userId: string) => {
         setSelectedUserIds((prevSelectedUserIds) => {
+            // If the user id is in the selectedUserIds array, remove it
             if (prevSelectedUserIds.includes(userId)) {
                 return prevSelectedUserIds.filter((id) => id !== userId);
-            } else {
+            }
+            // If the user id is not in the selectedUserIds array, add it
+            else {
                 return [...prevSelectedUserIds, userId];
             }
         });
@@ -165,6 +171,7 @@ function FormPage(props: any) {
 
     // Handle only number input
     const handleNumber = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        // If not number or backspace prevent the key pressed
         if (!/[0-9]/.test(event.key) && !(event.key === 'Backspace')) {
             event.preventDefault();
         }
@@ -172,12 +179,15 @@ function FormPage(props: any) {
 
     // Validate the phone number
     const validatePhoneNumber = (_: any, value: any) => {
+        // If empty return Promise reject
         if (!value) {
             return Promise.reject(new Error(`${t('enter')} '${t('phone_number')}'`));
         }
+        // If not number return Promise reject
         else if (value && !/^\d+$/.test(value)) {
             return Promise.reject(new Error(t('number_error')));
         }
+        // If not 10 digits return Promise reject
         else if (value.length !== 10) {
             return Promise.reject(new Error(t('phone_error')));
         }
@@ -186,9 +196,11 @@ function FormPage(props: any) {
 
     // Validate the salary
     const validateSalary = (_: any, value: any) => {
+        // If empty return Promise reject
         if (!value) {
             return Promise.reject(new Error(`${t('enter')} '${t('salary')}'`));
         }
+        // If not number return Promise reject
         else if (value && !/^\d+$/.test(value)) {
             return Promise.reject(new Error(t('number_error')));
         }
@@ -197,6 +209,7 @@ function FormPage(props: any) {
 
     // Validate the ID number
     const validateIDNumber = (_: any, values: any) => {
+        // Get the ID number
         const id1 = form.getFieldValue('ID1') || '';
         const id2 = form.getFieldValue('ID2') || '';
         const id3 = form.getFieldValue('ID3') || '';
@@ -204,9 +217,16 @@ function FormPage(props: any) {
         const id5 = form.getFieldValue('ID5') || '';
         const combinedIDNumber = id1 + id2 + id3 + id4 + id5;
 
-        if (combinedIDNumber && !/^\d+$/.test(combinedIDNumber)) {
+        // If empty return Promise resolve
+        if (!combinedIDNumber) {
+            return Promise.resolve();
+        }
+        // If not number return Promise reject
+        else if (!/^\d+$/.test(combinedIDNumber)) {
             return Promise.reject(new Error(t('number_error')));
-        } else if (combinedIDNumber && combinedIDNumber.length !== 13) {
+        }
+        // If not 13 digits return Promise reject
+        else if (combinedIDNumber.length !== 13) {
             return Promise.reject(new Error(t('id_error')));
         }
         return Promise.resolve();
@@ -214,10 +234,14 @@ function FormPage(props: any) {
 
     // Validate the Passport number
     const validatePassport = (_: any, value: any) => {
+        // Passport Number Pattern (1-2 Capital Letters + 6-7 Digits)
         const passportNumberPattern = /^[A-Z]{1,2}\d{6,7}$/;
+
+        // If empty return Promise resolve
         if (!value) {
             return Promise.resolve();
         }
+        // If not match the pattern return Promise reject
         else if (!passportNumberPattern.test(value)) {
             return Promise.reject(new Error(t('passport_error')));
         }
@@ -226,12 +250,17 @@ function FormPage(props: any) {
 
     // Form submit
     const handleFormSubmit = (values: any) => {
+        // Convert the date
         const birthDate = values['Birth Date'];
         const serializedBirthDate = moment(birthDate).format('YYYY-MM-DD');
+
+        // Convert the Phone Number
         let telNumber = ''
         if (values['Dial Code'] && values['Phone Number']) {
             telNumber = values['Dial Code'] + values['Phone Number'];
         }
+
+        // Convert the Salary
         const expectedSalary = parseFloat(values['Expected Salary']);
 
         const formData: User = {
@@ -297,6 +326,8 @@ function FormPage(props: any) {
                 'Passport': editingUser?.passportNumber,
                 'Expected Salary': editingUser?.salary,
             });
+
+            // Set Edit State and Form Values
             setIsEdit(true);
             form.setFieldsValue(editingUser);
         }
@@ -311,6 +342,12 @@ function FormPage(props: any) {
         // Convert the date
         const birthDate = values['Birth Date'];
         const serializedBirthDate = moment(birthDate).format('YYYY-MM-DD');
+
+        // Convert the Phone Number
+        let telNumber = ''
+        if (values['Dial Code'] && values['Phone Number']) {
+            telNumber = values['Dial Code'] + values['Phone Number'];
+        }
 
         // Convert the Salary
         const expectedSalary = parseFloat(values['Expected Salary']);
@@ -332,7 +369,7 @@ function FormPage(props: any) {
             gender: values['Gender'],
             dial: values['Dial Code'],
             number: values['Phone Number'],
-            phoneNumber: values['Dial Code'] + values['Phone Number'],
+            phoneNumber: telNumber,
             passportNumber: values['Passport'],
             salary: expectedSalary,
         };
@@ -382,7 +419,7 @@ function FormPage(props: any) {
                                             placeholder={t('title')}
                                             allowClear
                                             value={editingUser?.title}
-                                            style={{ width: '80px' }}
+                                            style={{ width: '100px' }}
                                         >
                                             {titles.map((option) => (
                                                 <Select.Option key={option.id} value={option.id}>
