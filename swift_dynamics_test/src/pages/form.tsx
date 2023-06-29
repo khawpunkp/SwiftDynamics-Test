@@ -170,14 +170,69 @@ function FormPage(props: any) {
         }
     };
 
+    // Validate the phone number
+    const validatePhoneNumber = (_: any, value: any) => {
+        if (!value) {
+            return Promise.reject(new Error(`${t('enter')} '${t('phone_number')}'`));
+        }
+        else if (value && !/^\d+$/.test(value)) {
+            return Promise.reject(new Error(t('number_error')));
+        }
+        else if (value.length !== 10) {
+            return Promise.reject(new Error(t('phone_error')));
+        }
+        return Promise.resolve();
+    };
+
+    // Validate the salary
+    const validateSalary = (_: any, value: any) => {
+        if (!value) {
+            return Promise.reject(new Error(`${t('enter')} '${t('salary')}'`));
+        }
+        else if (value && !/^\d+$/.test(value)) {
+            return Promise.reject(new Error(t('number_error')));
+        }
+        return Promise.resolve();
+    };
+
+    // Validate the ID number
+    const validateIDNumber = (_: any, values: any) => {
+        const id1 = form.getFieldValue('ID1') || '';
+        const id2 = form.getFieldValue('ID2') || '';
+        const id3 = form.getFieldValue('ID3') || '';
+        const id4 = form.getFieldValue('ID4') || '';
+        const id5 = form.getFieldValue('ID5') || '';
+        const combinedIDNumber = id1 + id2 + id3 + id4 + id5;
+
+        if (combinedIDNumber && !/^\d+$/.test(combinedIDNumber)) {
+            return Promise.reject(new Error(t('number_error')));
+        } else if (combinedIDNumber && combinedIDNumber.length !== 13) {
+            return Promise.reject(new Error(t('id_error')));
+        }
+        return Promise.resolve();
+    }
+
+    // Validate the Passport number
+    const validatePassport = (_: any, value: any) => {
+        const passportNumberPattern = /^[A-Z]{1,2}\d{6,7}$/;
+        if (!value) {
+            return Promise.resolve();
+        }
+        else if (!passportNumberPattern.test(value)) {
+            return Promise.reject(new Error(t('passport_error')));
+        }
+        return Promise.resolve();
+    };
+
     // Form submit
     const handleFormSubmit = (values: any) => {
         const birthDate = values['Birth Date'];
         const serializedBirthDate = moment(birthDate).format('YYYY-MM-DD');
         let telNumber = ''
-        if (!values['Dial Code'] || !values['Phone Number']) {
+        if (values['Dial Code'] && values['Phone Number']) {
             telNumber = values['Dial Code'] + values['Phone Number'];
         }
+        const expectedSalary = parseFloat(values['Expected Salary']);
 
         const formData: User = {
             id: uuidv4(),
@@ -197,7 +252,7 @@ function FormPage(props: any) {
             number: values['Phone Number'],
             phoneNumber: telNumber,
             passportNumber: values['Passport'],
-            salary: values['Expected Salary'],
+            salary: expectedSalary,
         };
 
         dispatch(userActions.addUser(formData));
@@ -224,7 +279,6 @@ function FormPage(props: any) {
 
     // Change the form values when editing user
     useEffect(() => {
-        console.log('Editing User:', editingUser);
         if (editingUser) {
             form.setFieldsValue({
                 'Title': editingUser?.title,
@@ -254,12 +308,14 @@ function FormPage(props: any) {
             // Handle the case when editingUser is null
             return;
         }
-
+        // Convert the date
         const birthDate = values['Birth Date'];
         const serializedBirthDate = moment(birthDate).format('YYYY-MM-DD');
 
-        const telNumber = values['Dial Code'] + values['Phone Number'];
+        // Convert the Salary
+        const expectedSalary = parseFloat(values['Expected Salary']);
 
+        // Create User Data to Dispatch
         const formData: User = {
             id: editingUser?.id || '',
             title: values['Title'],
@@ -276,13 +332,15 @@ function FormPage(props: any) {
             gender: values['Gender'],
             dial: values['Dial Code'],
             number: values['Phone Number'],
-            phoneNumber: telNumber,
+            phoneNumber: values['Dial Code'] + values['Phone Number'],
             passportNumber: values['Passport'],
-            salary: values['Expected Salary'],
+            salary: expectedSalary,
         };
 
+        // Dispatch the Action
         dispatch(userActions.updateUser({ id: editingUser.id, user: formData }));
 
+        // Reset the Form
         form.resetFields();
         setIsEdit(false);
     };
@@ -384,9 +442,9 @@ function FormPage(props: any) {
                                 <Row style={{ marginTop: '10px', marginBottom: '10px' }}>
 
                                     {/* ID Number split to 5 input */}
-                                    <Form.Item name='idNumber' label={t('id_number')} >
+                                    <Form.Item name='idNumber' label={t('id_number')} rules={[{ validator: validateIDNumber }]}>
                                         <Row align="middle" gutter={0} style={{ flexWrap: 'nowrap' }}>
-                                            <Form.Item name="ID1" noStyle>
+                                            <Form.Item name="ID1" noStyle initialValue="">
                                                 <Input
                                                     style={{ width: '100px', borderRadius: '6px', marginRight: '5px', textAlign: 'center' }}
                                                     maxLength={1}
@@ -395,7 +453,7 @@ function FormPage(props: any) {
                                                 />
                                             </Form.Item>
                                             <span className='dash'>-</span>
-                                            <Form.Item name="ID2" noStyle>
+                                            <Form.Item name="ID2" noStyle initialValue="">
                                                 <Input
                                                     style={{ width: '150px', borderRadius: '6px', marginLeft: '5px', marginRight: '5px', textAlign: 'center' }}
                                                     maxLength={4}
@@ -404,7 +462,7 @@ function FormPage(props: any) {
                                                 />
                                             </Form.Item>
                                             <span className='dash'>-</span>
-                                            <Form.Item name="ID3" noStyle>
+                                            <Form.Item name="ID3" noStyle initialValue="">
                                                 <Input
                                                     style={{ width: '170px', borderRadius: '6px', marginLeft: '5px', marginRight: '5px', textAlign: 'center' }}
                                                     maxLength={5}
@@ -413,7 +471,7 @@ function FormPage(props: any) {
                                                 />
                                             </Form.Item>
                                             <span className='dash'>-</span>
-                                            <Form.Item name="ID4" noStyle>
+                                            <Form.Item name="ID4" noStyle initialValue="">
                                                 <Input
                                                     style={{ width: '120px', borderRadius: '6px', marginLeft: '5px', marginRight: '5px', textAlign: 'center' }}
                                                     maxLength={2}
@@ -422,9 +480,9 @@ function FormPage(props: any) {
                                                 />
                                             </Form.Item>
                                             <span className='dash'>-</span>
-                                            <Form.Item name="ID5" noStyle>
+                                            <Form.Item name="ID5" noStyle initialValue="">
                                                 <Input
-                                                    style={{ width: '100px', borderRadius: '6px', marginLeft: '5px' }}
+                                                    style={{ width: '100px', borderRadius: '6px', marginLeft: '5px', textAlign: 'center' }}
                                                     maxLength={1}
                                                     placeholder=""
                                                     onKeyDown={handleNumber}
@@ -491,9 +549,8 @@ function FormPage(props: any) {
                                             {/* Number */}
                                             <Form.Item name="Phone Number" noStyle rules={[
                                                 {
-                                                    required: true,
-                                                    message: `${t('enter')} '${t('phone_number')}'`,
-                                                },
+                                                    validator: validatePhoneNumber
+                                                }
                                             ]}>
                                                 <Input
                                                     style={{ width: '320px', borderRadius: '6px', marginLeft: '10px' }}
@@ -510,18 +567,15 @@ function FormPage(props: any) {
                                 <Row style={{ marginTop: '10px', marginBottom: '10px' }}>
 
                                     {/* Passport Number */}
-                                    <Form.Item name="Passport" label={t('passport')} style={{ width: '400px' }}>
-                                        <Input id='Passport' placeholder="" maxLength={9} allowClear onKeyDown={handleNumber} />
+                                    <Form.Item name="Passport" label={t('passport')} style={{ width: '400px' }} rules={[{ validator: validatePassport }]}>
+                                        <Input id='Passport' placeholder="" maxLength={9} allowClear />
                                     </Form.Item>
                                 </Row>
 
                                 <Row style={{ marginTop: '10px' }}>
 
                                     {/* Expected Salary */}
-                                    <Form.Item name="Expected Salary" label={t('salary')} style={{ width: '400px', marginRight: '200px' }} rules={[{
-                                        required: true,
-                                        message: `${t('enter')} '${t('salary')}'`,
-                                    }]}>
+                                    <Form.Item name="Expected Salary" label={t('salary')} style={{ width: '400px', marginRight: '200px' }} rules={[{ required: true, validator: validateSalary }]}>
                                         <Input id='Salary' placeholder="" onKeyDown={handleNumber} allowClear />
                                     </Form.Item>
 

@@ -20,7 +20,7 @@ export interface User {
     number: string;
     phoneNumber: string;
     passportNumber: string;
-    salary: string;
+    salary: number;
 }
 
 interface AppState {

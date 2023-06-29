@@ -66,7 +66,6 @@ function LayoutPage(props: any) {
         const temp = firstRowIndex;
         setFirstRowIndex(secondRowIndex);
         setSecondRowIndex(temp);
-        console.log(shape[firstRowIndex[0]]);
     }
 
     return (

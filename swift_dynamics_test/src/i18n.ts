@@ -54,6 +54,10 @@ i18n
                 edit: "Edit",
                 delete: "Delete",
                 enter: "Please Enter",
+                number_error: "Please Enter Number Only",
+                id_error: "Please Enter 13 Digit",
+                phone_error: "Please Enter 10 Digit",
+                passport_error: "Please Enter Correct Passport Number",
             }
         },
         th: {
@@ -88,6 +92,10 @@ i18n
                 edit: "แก้ไข",
                 delete: "ลบ",
                 enter: "กรุณากรอก",
+                number_error: "กรุณากรอกตัวเลขเท่านั้น",
+                id_error: "กรุณากรอกตัวเลข 13 หลัก",
+                phone_error: "กรุณากรอกตัวเลข 10 หลัก",
+                passport_error: "กรุณากรอกเลขหนังสือเดินทางให้ถูกต้อง",
             }
         }
     }
