@@ -10,11 +10,6 @@ export interface User {
   lastName: string;
   birthDate: string;
   nationality: string;
-  id1: string;
-  id2: string;
-  id3: string;
-  id4: string;
-  id5: string;
   idNumber: string;
   gender: string;
   dial: string;

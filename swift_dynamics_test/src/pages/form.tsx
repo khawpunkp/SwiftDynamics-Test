@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Button,
@@ -7,6 +7,7 @@ import {
     DatePicker,
     Form,
     Input,
+    InputRef,
     Radio,
     Row,
     Select,
@@ -30,6 +31,14 @@ import genders from "../data/gender.json";
 function FormPage(props: any) {
     const { t, i18n } = useTranslation();
     const [form] = Form.useForm();
+
+    const inputRefs = [
+        useRef<InputRef>(null),
+        useRef<InputRef>(null),
+        useRef<InputRef>(null),
+        useRef<InputRef>(null),
+        useRef<InputRef>(null),
+    ];
 
     // Constant to control checkbox
     const [allSelected, setAllSelected] = useState(false);
@@ -200,6 +209,32 @@ function FormPage(props: any) {
         }
     };
 
+    const handleID = (event: React.KeyboardEvent<HTMLInputElement>, currentIndex: number) => {
+        const { target, key } = event;
+        const maxLength = parseInt((target as HTMLInputElement).getAttribute('maxLength') || '0', 10);
+        const value = (target as HTMLInputElement).value;
+
+        handleNumber(event)
+
+        if (key === 'Backspace' && value === '') {
+            // Move focus to the previous input if Backspace is pressed and current input is empty
+            if (currentIndex > 0) {
+                inputRefs[currentIndex - 1].current?.focus();
+            } else if (currentIndex === 0) {
+                // If the current input is the first input, do nothing
+            }
+        
+        } else if (key !== 'Backspace' && value.length >= maxLength) {
+            // Move focus to the next input if the current input has reached its maximum length
+            if (currentIndex < inputRefs.length - 1) {
+                inputRefs[currentIndex + 1].current?.focus();
+            } else if (currentIndex === inputRefs.length - 1) {
+                // If the current input is the last input, do nothing
+            }
+        }
+    };
+
+
     // Validate the phone number
     const validatePhoneNumber = (_: any, value: any) => {
         // If empty return Promise reject
@@ -293,11 +328,6 @@ function FormPage(props: any) {
             lastName: values["Last Name"],
             birthDate: serializedBirthDate,
             nationality: values["Nationality"],
-            id1: values["ID1"],
-            id2: values["ID2"],
-            id3: values["ID3"],
-            id4: values["ID4"],
-            id5: values["ID5"],
             idNumber:
                 values["ID1"] +
                 values["ID2"] +
@@ -343,11 +373,11 @@ function FormPage(props: any) {
                 "Last Name": editingUser?.lastName,
                 "Birth Date": editingUser ? moment(editingUser.birthDate) : undefined,
                 Nationality: editingUser?.nationality,
-                ID1: editingUser?.id1,
-                ID2: editingUser?.id2,
-                ID3: editingUser?.id3,
-                ID4: editingUser?.id4,
-                ID5: editingUser?.id5,
+                ID1: editingUser?.idNumber.charAt(0),
+                ID2: editingUser?.idNumber.substring(1, 5),
+                ID3: editingUser?.idNumber.substring(5, 10),
+                ID4: editingUser?.idNumber.substring(10, 12),
+                ID5: editingUser?.idNumber.charAt(12),
                 Gender: editingUser?.gender,
                 "Dial Code": editingUser?.dial,
                 "Phone Number": editingUser?.number,
@@ -388,11 +418,6 @@ function FormPage(props: any) {
             lastName: values["Last Name"],
             birthDate: serializedBirthDate,
             nationality: values["Nationality"],
-            id1: values["ID1"],
-            id2: values["ID2"],
-            id3: values["ID3"],
-            id4: values["ID4"],
-            id5: values["ID5"],
             idNumber:
                 values["ID1"] +
                 values["ID2"] +
@@ -578,6 +603,7 @@ function FormPage(props: any) {
                                         >
                                             <Form.Item name="ID1" noStyle initialValue="">
                                                 <Input
+                                                    ref={inputRefs[0]}
                                                     style={{
                                                         width: "100px",
                                                         borderRadius: "6px",
@@ -586,12 +612,13 @@ function FormPage(props: any) {
                                                     }}
                                                     maxLength={1}
                                                     placeholder=""
-                                                    onKeyDown={handleNumber}
+                                                    onKeyDown={(event) => handleID(event, 0)}
                                                 />
                                             </Form.Item>
                                             <span className="dash">-</span>
                                             <Form.Item name="ID2" noStyle initialValue="">
                                                 <Input
+                                                    ref={inputRefs[1]}
                                                     style={{
                                                         width: "150px",
                                                         borderRadius: "6px",
@@ -601,12 +628,13 @@ function FormPage(props: any) {
                                                     }}
                                                     maxLength={4}
                                                     placeholder=""
-                                                    onKeyDown={handleNumber}
+                                                    onKeyDown={(event) => handleID(event, 1)}
                                                 />
                                             </Form.Item>
                                             <span className="dash">-</span>
                                             <Form.Item name="ID3" noStyle initialValue="">
                                                 <Input
+                                                    ref={inputRefs[2]}
                                                     style={{
                                                         width: "170px",
                                                         borderRadius: "6px",
@@ -616,12 +644,13 @@ function FormPage(props: any) {
                                                     }}
                                                     maxLength={5}
                                                     placeholder=""
-                                                    onKeyDown={handleNumber}
+                                                    onKeyDown={(event) => handleID(event, 2)}
                                                 />
                                             </Form.Item>
                                             <span className="dash">-</span>
                                             <Form.Item name="ID4" noStyle initialValue="">
                                                 <Input
+                                                    ref={inputRefs[3]}
                                                     style={{
                                                         width: "120px",
                                                         borderRadius: "6px",
@@ -631,12 +660,13 @@ function FormPage(props: any) {
                                                     }}
                                                     maxLength={2}
                                                     placeholder=""
-                                                    onKeyDown={handleNumber}
+                                                    onKeyDown={(event) => handleID(event, 3)}
                                                 />
                                             </Form.Item>
                                             <span className="dash">-</span>
                                             <Form.Item name="ID5" noStyle initialValue="">
                                                 <Input
+                                                    ref={inputRefs[4]}
                                                     style={{
                                                         width: "100px",
                                                         borderRadius: "6px",
@@ -645,7 +675,7 @@ function FormPage(props: any) {
                                                     }}
                                                     maxLength={1}
                                                     placeholder=""
-                                                    onKeyDown={handleNumber}
+                                                    onKeyDown={(event) => handleID(event, 4)}
                                                 />
                                             </Form.Item>
                                         </Row>
