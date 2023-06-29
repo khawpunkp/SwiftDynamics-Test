@@ -12,7 +12,7 @@ export interface User {
   nationality: string;
   idNumber: string;
   gender: string;
-  dial: string;
+  dialCode: string;
   number: string;
   phoneNumber: string;
   passportNumber: string;

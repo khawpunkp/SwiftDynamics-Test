@@ -293,7 +293,7 @@ function FormPage(props: any) {
     // Validate the Passport number
     const validatePassport = (_: any, value: any) => {
         // Passport Number Pattern (1-2 Capital Letters + 6-7 Digits)
-        const passportNumberPattern = /^[A-Z]{1,2}\d{6,7}$/;
+        const passportNumberPattern = /^([A-Z]\d{6}|[A-Z]{2}\d{6,7})$/;
 
         // If empty return Promise resolve
         if (!value) {
@@ -335,7 +335,7 @@ function FormPage(props: any) {
                 values["ID4"] +
                 values["ID5"],
             gender: values["Gender"],
-            dial: values["Dial Code"],
+            dialCode: values["Dial Code"],
             number: values["Phone Number"],
             phoneNumber: telNumber,
             passportNumber: values["Passport"],
@@ -368,20 +368,20 @@ function FormPage(props: any) {
     useEffect(() => {
         if (editingUser) {
             form.setFieldsValue({
-                Title: editingUser?.title,
+                "Title": editingUser?.title,
                 "First Name": editingUser?.firstName,
                 "Last Name": editingUser?.lastName,
                 "Birth Date": editingUser ? moment(editingUser.birthDate) : undefined,
-                Nationality: editingUser?.nationality,
-                ID1: editingUser?.idNumber.charAt(0),
-                ID2: editingUser?.idNumber.substring(1, 5),
-                ID3: editingUser?.idNumber.substring(5, 10),
-                ID4: editingUser?.idNumber.substring(10, 12),
-                ID5: editingUser?.idNumber.charAt(12),
-                Gender: editingUser?.gender,
-                "Dial Code": editingUser?.dial,
+                "Nationality": editingUser?.nationality,
+                "ID1": editingUser?.idNumber.charAt(0),
+                "ID2": editingUser?.idNumber.substring(1, 5),
+                "ID3": editingUser?.idNumber.substring(5, 10),
+                "ID4": editingUser?.idNumber.substring(10, 12),
+                "ID5": editingUser?.idNumber.charAt(12),
+                "Gender": editingUser?.gender,
+                "Dial Code": editingUser?.dialCode,
                 "Phone Number": editingUser?.number,
-                Passport: editingUser?.passportNumber,
+                "Passport": editingUser?.passportNumber,
                 "Expected Salary": editingUser?.salary,
             });
 
@@ -425,7 +425,7 @@ function FormPage(props: any) {
                 values["ID4"] +
                 values["ID5"],
             gender: values["Gender"],
-            dial: values["Dial Code"],
+            dialCode: values["Dial Code"],
             number: values["Phone Number"],
             phoneNumber: telNumber,
             passportNumber: values["Passport"],
