@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { v4 as uuidv4 } from 'uuid';
 
 export interface User {
     id: string; 
@@ -38,11 +37,10 @@ const userSlice = createSlice({
     initialState,
     reducers: {
       addUser: (state, action: PayloadAction<User>) => {
-        const userWithId = {
-          ...action.payload,
-          id: uuidv4(), // Generate a unique ID using uuidv4()
+        const user = {
+          ...action.payload,// Generate a unique ID using uuidv4()
         };
-        state.users.push(userWithId);
+        state.users.push(user);
       },
       updateUser: (state, action: PayloadAction<{ id: string; user: User }>) => {
         const { id, user } = action.payload;

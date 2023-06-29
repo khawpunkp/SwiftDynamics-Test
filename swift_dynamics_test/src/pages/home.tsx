@@ -7,19 +7,24 @@ import { useNavigate } from 'react-router-dom';
 function HomePage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+
+    {/* Constant to triggered Loading State */}
     const [loading, setLoading] = useState<boolean>(false);
 
+    // Set loading state
     const handleNavigate = (path: string) => {
-        setLoading(true); // Set loading state to true before changing the path
+        setLoading(true); 
         navigate(path);
     };
 
     return <>
-        {loading ? ( // Render a loading indicator when loading state is true
+        {/* Render a loading */}
+        {loading ? ( 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
                 <h1>Loading...</h1>
             </div>
         ) : (
+            // Render the buttons in home page
             <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
                 <Button className="HomePageButton" onClick={() => handleNavigate('/layout')}>
                     <p style={{ fontWeight: 'bold' }}>{t('test')} 1</p>

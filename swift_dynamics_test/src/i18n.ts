@@ -41,6 +41,7 @@ i18n
                 nationality: "Nationality",
                 id_number: "Identification Number",
                 gender: "Gender",
+                dial_code: "Dial Code",
                 phone_number: "Telephone Number",
                 passport: "Passport Number",               
                 salary: "Expected Salary",
@@ -52,6 +53,7 @@ i18n
                 action: "Action",
                 edit: "Edit",
                 delete: "Delete",
+                enter: "Please Enter",
             }
         },
         th: {
@@ -73,6 +75,7 @@ i18n
                 nationality: "สัญชาติ",
                 id_number: "เลขบัตรประชาชน",
                 gender: "เพศ",
+                dial_code: "รหัสประเทศ",
                 phone_number: "หมายเลขโทรศัพท์มือถือ",
                 passport: "เลขหนังสือเดินทาง",               
                 salary: "เงินเดือนที่คาดหวัง",
@@ -84,6 +87,7 @@ i18n
                 action: "จัดการ",
                 edit: "แก้ไข",
                 delete: "ลบ",
+                enter: "กรุณากรอก",
             }
         }
     }

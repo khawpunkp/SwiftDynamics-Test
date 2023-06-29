@@ -1,15 +1,22 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import './layout.css';
 
 function LayoutPage(props: any) {
     const { t } = useTranslation();
-    const [moveUp, setMoveUp] = useState<boolean>(false);
+    
+    {/* Constant to triggered Move Position */}
+    const [movePosition, setMovePosition] = useState<boolean>(false);
+
+    {/* Array of the shapes */}
     const [shape, setShape] = useState<string[]>(["parallelogram", "rectangle", "trapezoid", "oval", "circle", "square"]);
+
+    {/* Index of the first row and the second row */}
     const [firstRowIndex, setFirstRowIndex] = useState<number[]>([0, 1, 2])
     const [secondRowIndex, setSecondRowIndex] = useState<number[]>([3, 4, 5])
 
+    {/* Randomize the shape */}
     const handleRandomShape = () => {
         setShape((prevShape) => {
             const updatedShape = [...prevShape]; // Create a copy of the array
@@ -24,10 +31,12 @@ function LayoutPage(props: any) {
         });
     };
 
+    {/* Randomize the shape when the page is loaded */}
     useEffect(() => {
         handleRandomShape();
     }, []);
 
+    {/* Move Shape to the Left */}
     const handleMoveLeft = () => {
         setShape(prevShape => {
             const updatedShape = [...prevShape]; // Create a copy of the array
@@ -39,6 +48,7 @@ function LayoutPage(props: any) {
         });
     };
 
+    {/* Move Shape to the Right */}
     const handleMoveRight = () => {
         setShape(prevShape => {
             const updatedShape = [...prevShape]; // Create a copy of the array
@@ -50,10 +60,9 @@ function LayoutPage(props: any) {
         });
     };
 
-
-
-    const handleMoveUp = () => {
-        setMoveUp(!moveUp);
+    {/* Handle Move Position by Swapping Row */}
+    const handleMovePosition = () => {
+        setMovePosition(!movePosition);
         const temp = firstRowIndex;
         setFirstRowIndex(secondRowIndex);
         setSecondRowIndex(temp);
@@ -62,12 +71,14 @@ function LayoutPage(props: any) {
 
     return (
         <>
-            {props.loading ? ( // Render a loading indicator when loading state is true
+            {/* Render a loading  */}
+            {props.loading ? (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
                     <h1>Loading...</h1>
                 </div>
             ) : (
                 <>
+                    {/* Page Title */}
                     <div style={{ position: 'relative' }}>
                         <h1 style={{ position: 'absolute', left: '10px' }}>
                             {t('layout')}
@@ -75,12 +86,14 @@ function LayoutPage(props: any) {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
                         <div>
+
+                            {/* Control Button */}
                             <Row>
-                                <button className='ShapeContainer' style={{ position: 'relative' }} onClick={() => handleMoveLeft()}>
+                                <Button className='ShapeContainer' style={{ position: 'relative' }} onClick={() => handleMoveLeft()}>
                                     <div className='ButtonFooter'>{t('move_shape')}</div>
                                     <div className='tri-left' />
-                                </button>
-                                <button className='ShapeContainerWide' style={{ position: 'relative' }} onClick={() => handleMoveUp()}>
+                                </Button>
+                                <Button className='ShapeContainerWide' style={{ position: 'relative' }} onClick={() => handleMovePosition()}>
                                     <div className='ButtonFooter'>{t('move_position')}</div>
                                     <Row gutter={50} justify="space-between">
                                         <div style={{ width: "300px", display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
@@ -90,47 +103,54 @@ function LayoutPage(props: any) {
                                             <div className='tri-down' />
                                         </div>
                                     </Row>
-                                </button>
-                                <button className='ShapeContainer' style={{ position: 'relative' }} onClick={() => handleMoveRight()}>
+                                </Button>
+                                <Button className='ShapeContainer' style={{ position: 'relative' }} onClick={() => handleMoveRight()}>
                                     <div className='ButtonFooter'>{t('move_shape')}</div>
                                     <div className='tri-right' />
-                                </button>
+                                </Button>
                             </Row>
                         </div>
                         <hr style={{ height: '1px', width: '1220px', borderWidth: '0', color: 'gray', backgroundColor: 'gray', opacity: '0.3', marginTop: '40px', marginBottom: '16px' }} />
                         <div>
-                            <Row gutter={10} style={{ marginLeft: moveUp ? '0' : '100px' }}>
+                            {/* Render the shapes */}
+
+                            {/* First Row of Shape */}
+                            <Row gutter={10}
+                                style={{ marginLeft: movePosition ? '0' : '100px' }} // Swap position of the first row and the second row
+                            > 
                                 <Col >
-                                    <button className='ShapeContainer' onClick={() => handleRandomShape()}>
+                                    <Button className='ShapeContainer' onClick={() => handleRandomShape()}>
                                         <div className={shape[firstRowIndex[0]]}></div>
-                                    </button>
+                                    </Button>
                                 </Col>
                                 <Col >
-                                    <button className='ShapeContainer' onClick={() => handleRandomShape()}>
+                                    <Button className='ShapeContainer' onClick={() => handleRandomShape()}>
                                         <div className={shape[firstRowIndex[1]]}></div>
-                                    </button>
+                                    </Button>
                                 </Col>
                                 <Col >
-                                    <button className='ShapeContainer' onClick={() => handleRandomShape()}>
+                                    <Button className='ShapeContainer' onClick={() => handleRandomShape()}>
                                         <div className={shape[firstRowIndex[2]]}></div>
-                                    </button>
+                                    </Button>
                                 </Col>
                             </Row>
-                            <Row gutter={10} style={{ marginLeft: moveUp ? '100px' : '0' }}>
+
+                            {/* Second Row of Shape */}
+                            <Row gutter={10} style={{ marginLeft: movePosition ? '100px' : '0' }}>
                                 <Col >
-                                    <button className='ShapeContainer' onClick={() => handleRandomShape()}>
+                                    <Button className='ShapeContainer' onClick={() => handleRandomShape()}>
                                         <div className={shape[secondRowIndex[0]]}></div>
-                                    </button>
+                                    </Button>
                                 </Col>
                                 <Col >
-                                    <button className='ShapeContainer' onClick={() => handleRandomShape()}>
+                                    <Button className='ShapeContainer' onClick={() => handleRandomShape()}>
                                         <div className={shape[secondRowIndex[1]]}></div>
-                                    </button>
+                                    </Button>
                                 </Col>
                                 <Col >
-                                    <button className='ShapeContainer' onClick={() => handleRandomShape()}>
+                                    <Button className='ShapeContainer' onClick={() => handleRandomShape()}>
                                         <div className={shape[secondRowIndex[2]]}></div>
-                                    </button>
+                                    </Button>
                                 </Col>
                             </Row>
                         </div>
