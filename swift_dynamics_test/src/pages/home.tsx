@@ -8,7 +8,7 @@ function HomePage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    {/* Constant to triggered Loading State */}
+    // Constant to triggered Loading State
     const [loading, setLoading] = useState<boolean>(false);
 
     // Set loading state
